@@ -47,6 +47,15 @@ return [
             'report' => false,
         ],
 
+        'cloud' => [
+            'driver' => 'local',
+            'root' => env('STORAGE_PATH'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/cloud',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -75,6 +84,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('cloud') => env('STORAGE_PATH')
     ],
 
 ];
