@@ -15,17 +15,17 @@ trait ApiResponser {
         ], $code);
     }
 
-    public function successResponse(?string $message=null, $data = null)
+    public function successResponse(?string $message=null, $data = null): JsonResponse
     {
         return $this->sendResponse(message: $message, data: $data);
     }
 
-    public function errorResponse(?string $errorMessage=null, $data = null)
+    public function errorResponse(?string $errorMessage=null, $data = null): JsonResponse
     {
         return $this->sendResponse(error: $errorMessage, data: $data, success: false, code: HttpResponse::HTTP_BAD_REQUEST);
     }
 
-    public function notFoundResponse()
+    public function notFoundResponse(): JsonResponse
     {
         return $this->sendResponse("Запрашиваемый ресурс не найден!", success: false, code: HttpResponse::HTTP_NOT_FOUND);
     }
