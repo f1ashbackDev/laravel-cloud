@@ -13,10 +13,21 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'checkContentType' => App\Http\Middleware\CheckContentType::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $apiResponser = new class {
+            use \App\Traits\ApiResponser;
+        };
+
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+
+        $exceptions->render(function (Throwable $e) use ($apiResponser) {
+            $message = app()->isProduction() ? "Внутренняя ошибка сервера" : $e->getMessage();
+            return $apiResponser->errorResponse($message);
+        });
     })->create();
